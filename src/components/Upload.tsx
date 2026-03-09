@@ -22,7 +22,6 @@ export default function Upload({ onComplete }: UploadProps) {
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  // Cleanup on unmount
   const cleanup = useCallback(() => {
     if (intervalRef.current) clearInterval(intervalRef.current)
     if (timeoutRef.current) clearTimeout(timeoutRef.current)
@@ -35,7 +34,7 @@ export default function Upload({ onComplete }: UploadProps) {
       setProgress(0)
 
       const reader = new FileReader()
-      reader.onerror = () => console.error('FileReader error reading file')
+      reader.onerror = () => console.error('Erro ao ler o arquivo')
       reader.onload = (e) => {
         const b64 = e.target?.result as string
         intervalRef.current = setInterval(() => {
@@ -79,18 +78,16 @@ export default function Upload({ onComplete }: UploadProps) {
     <div className="upload-shell" id="upload">
       <div className="grid-overlay" />
       <div className="upload-card">
-        {/* Header */}
         <div className="upload-head">
           <div className="upload-icon">
             <Layers size={22} color="var(--accent)" />
           </div>
           <div>
-            <h3>Upload your floor plan</h3>
-            <p>Supports JPEG, PNG, WEBP — up to 50MB</p>
+            <h3>Envie sua planta baixa</h3>
+            <p>Suporta JPEG, PNG, WEBP — até 50MB</p>
           </div>
         </div>
 
-        {/* Drop zone or status */}
         {!file ? (
           <div
             className={`drop-zone${isDragging ? ' is-dragging' : ''}`}
@@ -111,10 +108,10 @@ export default function Upload({ onComplete }: UploadProps) {
               </div>
               <p>
                 {isSignedIn
-                  ? 'Click to upload or drag & drop'
-                  : 'Sign in with Puter to upload'}
+                  ? 'Clique para enviar ou arraste o arquivo'
+                  : 'Entre com sua conta Puter para enviar'}
               </p>
-              <p className="help">Max file size: 50MB</p>
+              <p className="help">Tamanho máximo: 50MB</p>
             </div>
           </div>
         ) : (
@@ -130,7 +127,7 @@ export default function Upload({ onComplete }: UploadProps) {
                 <div className="bar" style={{ width: `${progress}%` }} />
               </div>
               <p className="status-text">
-                {progress < 100 ? 'Analyzing floor plan...' : 'Redirecting...'}
+                {progress < 100 ? 'Analisando planta...' : 'Redirecionando...'}
               </p>
             </div>
           </div>

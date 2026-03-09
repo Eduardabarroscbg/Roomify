@@ -14,7 +14,6 @@ export default function Home() {
   const [projects, setProjects] = useState<DesignItem[]>([])
   const isCreatingRef = useRef(false)
 
-  // Load projects on mount / when auth changes
   useEffect(() => {
     if (!isSignedIn) { setProjects([]); return }
     const fetchProjects = async () => {
@@ -30,7 +29,7 @@ export default function Home() {
     isCreatingRef.current = true
     try {
       const id = generateProjectId()
-      const name = `Residence ${id.slice(-4)}`
+      const name = `Residência ${id.slice(-4)}`
       const newItem: DesignItem = {
         id,
         name,
@@ -48,7 +47,7 @@ export default function Home() {
       })
       return true
     } catch (e) {
-      console.error('Failed to create project', e)
+      console.error('Falha ao criar projeto', e)
       return false
     } finally {
       isCreatingRef.current = false
@@ -63,18 +62,18 @@ export default function Home() {
       <section className="hero">
         <div className="announce">
           <div className="dot" />
-          Introducing Roomify 2.0
+          Apresentando o Roomify 2.0
         </div>
-        <h1>Build beautiful spaces<br />at the speed of thought</h1>
+        <h1>Visualize espaços incríveis<br />na velocidade do pensamento</h1>
         <p className="subtitle">
-          Roomify is an AI-first design environment that helps you visualize,
-          render, and ship architectural projects faster than ever.
+          Roomify é uma plataforma de design com inteligência artificial que transforma
+          plantas baixas 2D em renders 3D fotorrealistas em segundos.
         </p>
         <div className="actions">
           <a href="#upload" className="btn-cta">
-            Start Building <ArrowRight size={18} className="icon" />
+            Começar agora <ArrowRight size={18} className="icon" />
           </a>
-          <Button variant="outline" size="lg">Watch Demo</Button>
+          <Button variant="outline" size="lg">Ver demonstração</Button>
         </div>
       </section>
 
@@ -86,8 +85,8 @@ export default function Home() {
         <div className="section-inner">
           <div className="section-head">
             <div className="copy">
-              <h2>Projects</h2>
-              <p>Your latest work and shared community projects — all in one place</p>
+              <h2>Projetos</h2>
+              <p>Seus últimos trabalhos — todos em um só lugar</p>
             </div>
           </div>
 
@@ -97,8 +96,8 @@ export default function Home() {
                 <p style={{ fontSize: '3rem', marginBottom: '16px' }}>🏛️</p>
                 <p style={{ color: 'var(--text-dim)', fontSize: '0.9rem' }}>
                   {isSignedIn
-                    ? 'No projects yet — upload your first floor plan above'
-                    : 'Sign in to see your projects'}
+                    ? 'Nenhum projeto ainda — envie sua primeira planta acima'
+                    : 'Entre na sua conta para ver seus projetos'}
                 </p>
               </div>
             ) : (
@@ -111,17 +110,17 @@ export default function Home() {
                   <div className="preview">
                     <img
                       src={project.renderedImage ?? project.sourceImage}
-                      alt="project"
+                      alt="projeto"
                       loading="lazy"
                     />
-                    <span className="badge">mine</span>
+                    <span className="badge">meu</span>
                   </div>
                   <div className="card-body">
                     <h3>{project.name}</h3>
                     <div className="meta">
                       <Clock size={12} />
                       <span>{formatDate(project.timestamp)}</span>
-                      <span>· by you</span>
+                      <span>· por você</span>
                     </div>
                   </div>
                   <div className="arrow">

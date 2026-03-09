@@ -18,33 +18,33 @@ export default function Navbar() {
     <header className="navbar">
       <a href="/" className="brand">
         <div className="logo-icon">
-          <Box size={16} color="#1a1209" />
+          <Box size={16} color="#fff" />
         </div>
         Roomify
       </a>
 
       <ul className="links">
-        <li><a href="#">Product</a></li>
-        <li><a href="#">Pricing</a></li>
-        <li><a href="#">Community</a></li>
-        <li><a href="#">Enterprise</a></li>
+        <li><a href="#">Produto</a></li>
+        <li><a href="#">Preços</a></li>
+        <li><a href="#">Comunidade</a></li>
+        <li><a href="#">Empresas</a></li>
       </ul>
 
       <div className="actions">
         {isSignedIn ? (
           <>
-            <span className="greeting">Hi, {username ?? 'user'}</span>
+            <span className="greeting">Olá, {username ?? 'usuário'}</span>
             <Button variant="ghost" size="sm" onClick={handleAuthClick}>
-              Log out
+              Sair
             </Button>
           </>
         ) : (
           <>
             <Button variant="ghost" size="sm" onClick={handleAuthClick}>
-              Log in
+              Entrar
             </Button>
             <a href="#upload" className="btn btn-primary btn-sm">
-              Get Started
+              Começar
             </a>
           </>
         )}

@@ -81,10 +81,11 @@ export default function Visualizer() {
     if (!item.sourceImage) return
     setIsProcessing(true)
     try {
+      console.log('🤖 Starting AI generation...')
       const { renderedImage } = await generate3DView({ sourceImage: item.sourceImage })
+      console.log('✅ AI generation result:', renderedImage ? 'success' : 'no image returned')
       if (renderedImage) {
         setCurrentImage(renderedImage)
-        // Persist rendered image
         const updated: DesignItem = {
           ...item,
           renderedImage,
@@ -94,9 +95,11 @@ export default function Visualizer() {
         const saved = await createProject({ item: updated, visibility: 'private' })
         if (saved) setProject(saved)
         else setProject(updated)
+      } else {
+        console.error('Generation returned no image')
       }
-    } catch (e) {
-      console.error('Generation failed', e)
+    } catch (e: any) {
+      console.error('Generation failed:', e?.message || e)
     } finally {
       setIsProcessing(false)
     }
@@ -129,12 +132,12 @@ export default function Visualizer() {
       <nav className="top-bar">
         <div className="brand">
           <div className="logo-icon">
-            <Box size={14} color="#1a1209" />
+            <Box size={14} color="#fff" />
           </div>
           Roomify
         </div>
         <Button variant="ghost" size="sm" className="exit" onClick={handleBack}>
-          <X size={14} className="icon" /> Exit Editor
+          <X size={14} className="icon" /> Sair do Editor
         </Button>
       </nav>
 
@@ -143,9 +146,9 @@ export default function Visualizer() {
         {/* Left panel */}
         <div className="panel">
           <div className="panel-header">
-            <p>Project</p>
-            <h2>{project?.name ?? `Residence ${id?.slice(-4)}`}</h2>
-            <p className="note">Created by you</p>
+            <p>Projeto</p>
+            <h2>{project?.name ?? `Residência ${id?.slice(-4)}`}</h2>
+            <p className="note">Criado por você</p>
           </div>
           <div className="panel-actions">
             <Button
@@ -155,7 +158,7 @@ export default function Visualizer() {
               onClick={handleExport}
               disabled={!currentImage}
             >
-              <Download size={14} /> Export
+              <Download size={14} /> Exportar
             </Button>
             <Button
               variant="ghost"
@@ -163,13 +166,13 @@ export default function Visualizer() {
               onClick={handleShare}
               disabled={!currentImage}
             >
-              <Share2 size={14} /> Share
+              <Share2 size={14} /> Compartilhar
             </Button>
           </div>
           {isProcessing && (
             <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: 8 }}>
               <span className="spinner-sm" style={{ display: 'inline-block', marginRight: 6 }} />
-              Generating AI render...
+              Gerando render com IA...
             </p>
           )}
         </div>
@@ -192,8 +195,8 @@ export default function Visualizer() {
               <div className="render-overlay">
                 <div className="rendering-card">
                   <div className="spinner" />
-                  <span className="title">Rendering...</span>
-                  <span className="subtitle">Generating your 3D visualization</span>
+                  <span className="title">Gerando...</span>
+                  <span className="subtitle">Criando sua visualização 3D</span>
                 </div>
               </div>
             )}
@@ -204,10 +207,10 @@ export default function Visualizer() {
             <div className="compare-panel">
               <div className="compare-header">
                 <div>
-                  <p>Comparison</p>
-                  <h3>Before &amp; After</h3>
+                  <p>Comparação</p>
+                  <h3>Antes &amp; Depois</h3>
                 </div>
-                <span className="hint">Drag to compare</span>
+                <span className="hint">Arraste para comparar</span>
               </div>
               <div className="compare-stage">
                 <ReactCompareSlider
