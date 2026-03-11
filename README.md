@@ -3,7 +3,7 @@
 O **Roomify** é uma plataforma web que usa inteligência artificial para transformar plantas baixas 2D em renders 3D fotorrealistas. Basta enviar a imagem da sua planta e em segundos você vê como os ambientes ficariam decorados e mobiliados.
 
 ---
-....
+
 ## ✨ O que o Roomify faz?
 
 - **Envio de planta baixa** — Você faz upload de uma imagem da sua planta (JPEG, PNG ou WEBP)
