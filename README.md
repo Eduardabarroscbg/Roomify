@@ -95,5 +95,5 @@ VITE_GEMINI_API_KEY=SuaChaveAqui
 - Como construir aplicações com **arquitetura serverless** usando serviços gratuitos.
 
 ## 🔗 Links
-- [Live Demo](https://roomify.vercel.app)
+- [Live Demo](https://roomify-neon.vercel.app)
 - **GitHub:** [@Eduardabarroscbg](https://github.com/Eduardabarroscbg)
