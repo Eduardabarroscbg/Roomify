@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ArrowRight, Clock, ArrowUpRight } from 'lucide-react'
+import { ArrowRight, Clock, ArrowUpRight, X } from 'lucide-react'
 import Navbar from '../components/Navbar'
 import Upload from '../components/Upload'
 import Button from '../components/ui/Button'
@@ -12,7 +12,23 @@ export default function Home() {
   const navigate = useNavigate()
   const { isSignedIn, userId } = useAuth()
   const [projects, setProjects] = useState<DesignItem[]>([])
+  const [showDemo, setShowDemo] = useState(false)
   const isCreatingRef = useRef(false)
+
+  // Fecha com ESC
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setShowDemo(false)
+    }
+    if (showDemo) document.addEventListener('keydown', handleKey)
+    return () => document.removeEventListener('keydown', handleKey)
+  }, [showDemo])
+
+  // Trava scroll quando modal aberto
+  useEffect(() => {
+    document.body.style.overflow = showDemo ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [showDemo])
 
   useEffect(() => {
     if (!isSignedIn) { setProjects([]); return }
@@ -73,9 +89,98 @@ export default function Home() {
           <a href="#upload" className="btn-cta">
             Começar agora <ArrowRight size={18} className="icon" />
           </a>
-          <Button variant="outline" size="lg">Ver demonstração</Button>
+          <Button variant="outline" size="lg" onClick={() => setShowDemo(true)}>
+            Ver demonstração
+          </Button>
         </div>
       </section>
+
+      {/* Modal de demonstração */}
+      {showDemo && (
+        <div
+          className="demo-overlay"
+          onClick={() => setShowDemo(false)}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 9999,
+            backgroundColor: 'rgba(0, 0, 0, 0.85)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '24px',
+            backdropFilter: 'blur(6px)',
+            animation: 'fadeIn 0.2s ease',
+          }}
+        >
+          <div
+            className="demo-modal"
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              position: 'relative',
+              width: '100%',
+              maxWidth: '900px',
+              borderRadius: '16px',
+              overflow: 'hidden',
+              boxShadow: '0 32px 80px rgba(0,0,0,0.6)',
+              background: '#000',
+              animation: 'scaleIn 0.25s ease',
+            }}
+          >
+            {/* Botão fechar */}
+            <button
+              onClick={() => setShowDemo(false)}
+              style={{
+                position: 'absolute',
+                top: '12px',
+                right: '12px',
+                zIndex: 10,
+                background: 'rgba(0,0,0,0.6)',
+                border: '1px solid rgba(255,255,255,0.15)',
+                borderRadius: '50%',
+                width: '36px',
+                height: '36px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                color: '#fff',
+                backdropFilter: 'blur(4px)',
+                transition: 'background 0.2s',
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.2)')}
+              onMouseLeave={(e) => (e.currentTarget.style.background = 'rgba(0,0,0,0.6)')}
+            >
+              <X size={18} />
+            </button>
+
+            {/* Vídeo */}
+            <video
+              src="/demostração do roomify.mp4"
+              controls
+              autoPlay
+              style={{
+                width: '100%',
+                display: 'block',
+                maxHeight: '80vh',
+                objectFit: 'contain',
+              }}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Animações */}
+      <style>{`
+        @keyframes fadeIn {
+          from { opacity: 0 }
+          to   { opacity: 1 }
+        }
+        @keyframes scaleIn {
+          from { transform: scale(0.93); opacity: 0 }
+          to   { transform: scale(1);    opacity: 1 }
+        }
+      `}</style>
 
       {/* Upload */}
       <Upload onComplete={handleUploadComplete} />
