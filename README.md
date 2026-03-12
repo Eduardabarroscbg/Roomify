@@ -2,7 +2,7 @@
   <h1 align="center">🏠 Roomify — Visualizador de Plantas com IA</h1>
 </div>
 
-![Project Preview](public/previews/Roomify__2_.png)
+![Project Preview](public/previews/Roomify.png)
 
 Uma plataforma web animada e funcional que usa **inteligência artificial** para transformar plantas baixas 2D em renders 3D fotorrealistas. Basta enviar a imagem da sua planta e em segundos você vê como os ambientes ficariam decorados e mobiliados.
 
