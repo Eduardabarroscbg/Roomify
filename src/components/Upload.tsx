@@ -1,6 +1,5 @@
 import { useState, useCallback, useRef } from 'react'
 import { Upload as UploadIcon, Layers, CheckCircle2, ImageIcon } from 'lucide-react'
-import { useAuth } from '../context/AuthContext'
 import {
   PROGRESS_INTERVAL_MS,
   PROGRESS_INCREMENT,
@@ -14,7 +13,6 @@ interface UploadProps {
 }
 
 export default function Upload({ onComplete }: UploadProps) {
-  const { isSignedIn } = useAuth()
   const [file, setFile] = useState<File | null>(null)
   const [isDragging, setIsDragging] = useState(false)
   const [progress, setProgress] = useState(0)
@@ -29,7 +27,6 @@ export default function Upload({ onComplete }: UploadProps) {
 
   const processFile = useCallback(
     (f: File) => {
-      if (!isSignedIn) return
       setFile(f)
       setProgress(0)
 
@@ -55,18 +52,17 @@ export default function Upload({ onComplete }: UploadProps) {
       }
       reader.readAsDataURL(f)
     },
-    [isSignedIn, onComplete, cleanup]
+    [onComplete, cleanup]
   )
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault()
-    if (isSignedIn) setIsDragging(true)
+    setIsDragging(true)
   }
   const handleDragLeave = () => setIsDragging(false)
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault()
     setIsDragging(false)
-    if (!isSignedIn) return
     const dropped = e.dataTransfer.files[0]
     if (dropped && ACCEPTED_TYPES.includes(dropped.type)) processFile(dropped)
   }
@@ -99,18 +95,13 @@ export default function Upload({ onComplete }: UploadProps) {
               type="file"
               className="drop-input"
               accept={ACCEPTED_EXTENSIONS}
-              disabled={!isSignedIn}
               onChange={handleChange}
             />
             <div className="drop-content">
               <div className="drop-icon">
                 <UploadIcon size={22} color="var(--accent)" />
               </div>
-              <p>
-                {isSignedIn
-                  ? 'Clique para enviar ou arraste o arquivo'
-                  : 'Entre com sua conta Puter para enviar'}
-              </p>
+              <p>Clique para enviar ou arraste o arquivo</p>
               <p className="help">Tamanho máximo: 50MB</p>
             </div>
           </div>

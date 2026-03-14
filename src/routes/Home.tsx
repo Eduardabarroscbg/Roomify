@@ -53,14 +53,23 @@ export default function Home() {
         renderedImage: undefined,
         timestamp: Date.now(),
         isPublic: false,
-        ownerId: userId,
+        ownerId: userId ?? undefined,
       }
-      const saved = await createProject({ item: newItem, visibility: 'private' })
-      const project = saved ?? newItem
-      setProjects((prev) => [project, ...prev])
-      navigate(`/visualizer/${id}`, {
-        state: { initialImage: project.sourceImage, name: project.name },
-      })
+
+      // Se logado: salva no Puter KV normalmente
+      // Se não logado: vai direto pro visualizer sem salvar
+      if (isSignedIn) {
+        const saved = await createProject({ item: newItem, visibility: 'private' })
+        const project = saved ?? newItem
+        setProjects((prev) => [project, ...prev])
+        navigate(`/visualizer/${id}`, {
+          state: { initialImage: project.sourceImage, name: project.name },
+        })
+      } else {
+        navigate(`/visualizer/${id}`, {
+          state: { initialImage: base64Image, name, guest: true },
+        })
+      }
       return true
     } catch (e) {
       console.error('Falha ao criar projeto', e)
@@ -98,7 +107,6 @@ export default function Home() {
       {/* Modal de demonstração */}
       {showDemo && (
         <div
-          className="demo-overlay"
           onClick={() => setShowDemo(false)}
           style={{
             position: 'fixed',
@@ -114,7 +122,6 @@ export default function Home() {
           }}
         >
           <div
-            className="demo-modal"
             onClick={(e) => e.stopPropagation()}
             style={{
               position: 'relative',
@@ -127,7 +134,6 @@ export default function Home() {
               animation: 'scaleIn 0.25s ease',
             }}
           >
-            {/* Botão fechar */}
             <button
               onClick={() => setShowDemo(false)}
               style={{
@@ -153,8 +159,6 @@ export default function Home() {
             >
               <X size={18} />
             </button>
-
-            {/* Vídeo */}
             <video
               src="/demostração do roomify.mp4"
               controls
@@ -170,7 +174,6 @@ export default function Home() {
         </div>
       )}
 
-      {/* Animações */}
       <style>{`
         @keyframes fadeIn {
           from { opacity: 0 }
@@ -184,6 +187,19 @@ export default function Home() {
 
       {/* Upload */}
       <Upload onComplete={handleUploadComplete} />
+
+      {/* Banner só aparece se não logado */}
+      {!isSignedIn && (
+        <div className="login-banner">
+          <div className="login-banner-inner">
+            <span className="login-banner-icon">💾</span>
+            <div>
+              <p className="login-banner-title">Faça login para salvar seus projetos</p>
+              <p className="login-banner-sub">Sem login, seus renders não ficam salvos. Entre com sua conta Puter gratuitamente.</p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Projects */}
       <section className="projects">
@@ -202,7 +218,7 @@ export default function Home() {
                 <p style={{ color: 'var(--text-dim)', fontSize: '0.9rem' }}>
                   {isSignedIn
                     ? 'Nenhum projeto ainda — envie sua primeira planta acima'
-                    : 'Entre na sua conta para ver seus projetos'}
+                    : 'Entre na sua conta para ver seus projetos salvos'}
                 </p>
               </div>
             ) : (
