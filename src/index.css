@@ -642,3 +642,38 @@ body {
     flex-direction: column;
   }
 }
+
+/* ---- LOGIN BANNER ---- */
+.login-banner {
+  max-width: 680px;
+  margin: 0 auto 48px;
+  padding: 0 16px;
+}
+
+.login-banner-inner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 20px;
+  background: rgba(240, 112, 32, 0.08);
+  border: 1px solid rgba(240, 112, 32, 0.25);
+  border-radius: 12px;
+}
+
+.login-banner-icon {
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.login-banner-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 2px;
+}
+
+.login-banner-sub {
+  font-size: 0.775rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
