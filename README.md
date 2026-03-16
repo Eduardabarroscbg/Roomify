@@ -98,4 +98,4 @@ VITE_GEMINI_API_KEY=SuaChaveAqui
 - [Live Demo](https://roomify-ifk8.vercel.app?_vercel_share=OH6vgrwy4JxP9kH1Ia2j1oqMnMdJmsvG)
 - **GitHub:** [@Eduardabarroscbg](https://github.com/Eduardabarroscbg)
 
-  Agradecimentos: Baseado em um estudo de caso de [Nome do Canal] com melhorias e personalizações próprias.
+  Agradecimentos: Baseado em um estudo de caso do canal JavaScript Mastery com melhorias e personalizações próprias.
