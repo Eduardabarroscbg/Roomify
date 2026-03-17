@@ -15,7 +15,6 @@ export default function Home() {
   const [showDemo, setShowDemo] = useState(false)
   const isCreatingRef = useRef(false)
 
-  // Fecha com ESC
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setShowDemo(false)
@@ -24,7 +23,6 @@ export default function Home() {
     return () => document.removeEventListener('keydown', handleKey)
   }, [showDemo])
 
-  // Trava scroll quando modal aberto
   useEffect(() => {
     document.body.style.overflow = showDemo ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
@@ -56,8 +54,6 @@ export default function Home() {
         ownerId: userId ?? undefined,
       }
 
-      // Se logado: salva no Puter KV normalmente
-      // Se não logado: vai direto pro visualizer sem salvar
       if (isSignedIn) {
         const saved = await createProject({ item: newItem, visibility: 'private' })
         const project = saved ?? newItem
@@ -159,8 +155,9 @@ export default function Home() {
             >
               <X size={18} />
             </button>
+            {/* ✅ src corrigido */}
             <video
-              src="/demostração do roomify.mp4"
+              src="/demonstracao.mp4"
               controls
               autoPlay
               style={{
