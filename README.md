@@ -1,4 +1,4 @@
-<div align="center">
+. <div align="center">
   <h1 align="center">🏠 Roomify — Visualizador de Plantas com IA</h1>
 </div>
 
